@@ -9,11 +9,6 @@ rhel_repository: ius
 #   - php70u
 #   - ...
 
-# If and which FPM package(s) to install.
-# fpm_packages:
-#   - php70u-fpm
-#   - ...
-
 # Custom PHP-FPM configuration.
 # fpm_conf_config:
 
