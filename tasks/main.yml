@@ -76,3 +76,4 @@
   tags: ['copy', 'php-fpm']
   with_items: "{{ php_pool_files }}"
   when: php_pool_files is defined
+  notify: php-fpm-restart-handler
