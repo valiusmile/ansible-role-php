@@ -71,7 +71,7 @@
 
 - name: Copy pool configurations if provided.
   copy:
-    dest: "{{ php_pool_path }}/{{ item }}"
+    dest: "{{ php_pool_path }}/{{ item | basename }}"
     src: "{{ item }}"
   tags: ['copy', 'php-fpm']
   with_items: "{{ php_pool_files }}"
