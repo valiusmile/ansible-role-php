@@ -17,12 +17,12 @@ rhel_repository: ius
 
 # Install this list of packages.
 default_packages:
-  - php7.0
+  - php7.1
   - ...
 
 # If and which FPM package(s) to install.
 fpm_packages:
-  - php7.0-fpm
+  - php7.1-fpm
   - ...
 
 # Custom PHP-FPM configuration.
@@ -42,13 +42,13 @@ php_ini_config:
     value: 64M
 
 # Configure the PHP ini path.
-php_ini_path: /etc/php/7.0/cli/php.ini
+php_ini_path: /etc/php/7.1/cli/php.ini
 
 # Configure the PHP conf path.
-php_conf_path: /etc/php/7.0/cli/php.ini
+php_conf_path: /etc/php/7.1/cli/php.ini
 
 # Configure the default pool directory
-php_pool_path: /etc/php/7.0/fpm/pool.d
+php_pool_path: /etc/php/7.1/fpm/pool.d
 ```
 
 Dependencies

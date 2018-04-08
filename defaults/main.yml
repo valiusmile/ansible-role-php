@@ -6,7 +6,7 @@ rhel_repository: ius
 
 # Install this list of packages.
 # default_packages:
-#   - php70u
+#   - php71u
 #   - ...
 
 # Custom PHP-FPM configuration.
@@ -26,12 +26,12 @@ php_ini_config:
     value: 64M
 
 # Configure the PHP ini path.
-# php_ini_path: /etc/php/7.0/cli/php.ini
+# php_ini_path: /etc/php/7.1/cli/php.ini
 
 # Configure the PHP conf path.
-# php_conf_path: /etc/php/7.0/cli/php.ini
+# php_conf_path: /etc/php/7.1/cli/php.ini
 
 # Configure the default pool directory
-# php_pool_path: /etc/php/7.0/fpm/pool.d
+# php_pool_path: /etc/php/7.1/fpm/pool.d
 
 # If you want to copy custom pool configurations please create the files under files/pools/ relative to the playbook.
