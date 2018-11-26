@@ -12,9 +12,11 @@ None
 
 Role Variables
 --------------
-```php_install_version: 7.2
 ```
-```php_install_extensions:
+php_install_version: 7.2
+```
+```
+php_install_extensions:
 # - bcmath
   - gd
 # - intl
@@ -32,11 +34,14 @@ Role Variables
 #   - pecl-mongodb
 #   - pecl-redis
 ```
-```php_install_fpm: true
 ```
-```php_install_cli: true
+php_install_fpm: true
 ```
-```php_ini_config:
+```
+php_install_cli: true
+```
+```
+php_ini_config:
   - name: memory_limit
     value: 256M
 
@@ -49,11 +54,13 @@ Role Variables
   - name: upload_max_filesize
     value: 64M
 ```
-```php_fpm_config:
+```
+php_fpm_config:
   - name: daemonize
     value: "yes"
 ```
-```php_fpm_pools:
+```
+php_fpm_pools:
   www:
     - name: user
       value: www-data
