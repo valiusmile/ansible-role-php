@@ -1,0 +1,5 @@
+{{ ansible_managed }}
+[{{ item.key }}]
+{% for option in item.value %}
+{{ option.name }} = {{ option.value }}
+{% endfor %}

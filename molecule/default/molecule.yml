@@ -8,10 +8,10 @@ lint:
 platforms:
   - name: Ubuntu
     image: ubuntu:latest
-    # - name: CentOS
-    #   image: centos:latest
-    # - name: Debian
-    #   image: debian:latest
+  - name: CentOS
+    image: centos:latest
+  - name: Debian
+    image: debian:latest
 
 provisioner:
   name: ansible

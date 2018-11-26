@@ -1,2 +1,6 @@
 ---
 __php_service: php-fpm
+__php_pool_path: /etc/php-fpm.d
+__php_module_path: /etc/php.d
+__php_config_path_cli: /etc/php.ini
+__php_config_path_fpm: /etc/php.ini

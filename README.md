@@ -1,40 +1,100 @@
-Role Name
+memoryleak.php
 =========
 
-A brief description of the role goes here.
+Role for installing and managing recent PHP versions.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+None
 
 Role Variables
 --------------
+```php_install_version: 7.2
+```
+```php_install_extensions:
+# - bcmath
+  - gd
+# - intl
+# - json
+# - mbstring
+# - mysqlnd
+# - opcache
+# - pdo
+# - pspell
+# - recode
+# - soap
+# - xml
+# - xmlrpc
+# for pecl extensions on RedHat platforms use pecl prefix:
+#   - pecl-mongodb
+#   - pecl-redis
+```
+```php_install_fpm: true
+```
+```php_install_cli: true
+```
+```php_ini_config:
+  - name: memory_limit
+    value: 256M
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+  - name: date.timezone
+    value: UTC
+
+  - name: post_max_size
+    value: 64M
+
+  - name: upload_max_filesize
+    value: 64M
+```
+```php_fpm_config:
+  - name: daemonize
+    value: "yes"
+```
+```php_fpm_pools:
+  www:
+    - name: user
+      value: www-data
+
+    - name: group
+      value: www-data
+
+    - name: listen
+      value: 0.0.0.0:9000
+
+    - name: listen.owner
+      value: www-data
+
+    - name: listen.group
+      value: www-data
+
+    - name: pm
+      value: dynamic
+
+    - name: pm.start_servers
+      value: 2
+
+    - name: pm.min_spare_servers
+      value: 1
+
+    - name: pm.max_children
+      value: 5
+
+    - name: pm.max_spare_servers
+      value: 3
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: all
       roles:
-         - { role: memoryleak.php, x: 42 }
+        - role: memoryleak.php
 
 License
 -------
@@ -44,5 +104,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+Haydar Ciftci, <haydar.ciftci@gmail.com>

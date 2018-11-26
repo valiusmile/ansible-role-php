@@ -1,13 +1,4 @@
 ---
-- debug:
-    var: ansible_distribution_version
-
-- debug:
-    var: ansible_distribution
-
-- debug:
-    var: ansible_distribution_release
-
 # Include var files
 - name: Include version-specific variables for CentOS/RHEL.
   include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
@@ -40,6 +31,13 @@
   tags: ['include_tasks']
 
 # Actual installation tasks
+- name: Install PHP cli.
+  package:
+    name: "{{_php_package_prefix}}-cli"
+    state: present
+  tags: ['package']
+  when: php_install_cli
+
 - name: Install PHP packages.
   package:
     name: "{{_php_package_prefix}}-{{item}}"
@@ -53,3 +51,33 @@
     state: present
   tags: ['package']
   when: php_install_fpm
+
+# Configuration tasks
+- name: "Configure PHP CLI"
+  lineinfile:
+    line: "{{ item.name + ' = ' + item.value }}"
+    path: "{{ __php_config_path_cli }}"
+    regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
+    state: present
+  tags: ['lineinfile']
+  when: php_install_cli
+  loop: "{{ php_ini_config }}"
+
+- name: "Configure PHP-FPM"
+  lineinfile:
+    line: "{{ item.name + ' = ' + item.value }}"
+    path: "{{ __php_config_path_cli }}"
+    regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
+    state: present
+  tags: ['lineinfile']
+  loop: "{{ php_ini_config }}"
+  when: ( php_install_cli and __php_config_path_cli != __php_config_path_fpm ) or
+        ( php_install_cli == False and php_install_fpm)
+
+- name: Create PHP-FPM pool configurations.
+  template:
+    dest: "{{ __php_pool_path }}/{{ item.key }}.conf"
+    src: pool.conf.j2
+  tags: ['template']
+  when: php_install_fpm
+  loop: "{{ php_fpm_pools|dict2items }}"
