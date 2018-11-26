@@ -1,0 +1,30 @@
+---
+- name: Install packages for PHP repository.
+  package:
+    name: "{{ item }}"
+    state: present
+  tags: ['package']
+  with_items:
+    - apt-transport-https
+    - lsb-release
+    - ca-certificates
+
+- name: Download GPG key for repsoitory.
+  get_url:
+    dest: /etc/apt/trusted.gpg.d/php.gpg
+    url: https://packages.sury.org/php/apt.gpg
+  tags: ['get_url']
+
+- name: Create PHP repository.
+  apt_repository:
+    codename: stretch
+    filename: php
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+  tags: ['apt_repository']
+
+- name: Set prefix for PHP package names.
+  set_fact:
+    _php_package_prefix: "php{{ php_install_version }}"
+  tags: ['set_fact']

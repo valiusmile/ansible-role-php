@@ -1,0 +1,23 @@
+---
+# defaults file for memoryleak.php
+php_install_version: 7.1
+php_install_extensions:
+  - bcmath
+  - common
+  - gd
+  - intl
+  - json
+  - mbstring
+  - mysqlnd
+  - opcache
+  - pdo
+  - pspell
+  - recode
+  - soap
+  - xml
+  - xmlrpc
+# for pecl extensions on RedHat platforms use pecl prefix:
+#   - pecl-mongodb
+#   - pecl-redis
+
+php_install_fpm: true

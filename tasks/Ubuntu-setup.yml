@@ -1,0 +1,13 @@
+---
+- name: Create PHP repository.
+  apt_repository:
+    repo: "ppa:ondrej/php"
+    state: present
+    update_cache: true
+  tags: ['apt_repository']
+  when: php_install_version != '7.2'
+
+- name: Set prefix for PHP package names.
+  set_fact:
+    _php_package_prefix: "php{{ php_install_version }}"
+  tags: ['set_fact']

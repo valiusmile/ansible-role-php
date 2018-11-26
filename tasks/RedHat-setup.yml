@@ -1,0 +1,31 @@
+---
+# IUS yum repository.
+- name: Set distribution major version
+  set_fact:
+    _distribution_major_version: "{{ ansible_distribution_version.split('.')[0] }}"
+  tags: ['set_fact']
+
+- name: Install EPEL.
+  package:
+    name: epel-release
+    state: present
+  tags: ['package']
+
+- name: Instal IUS
+  package:
+    name: https://centos{{ _distribution_major_version }}.iuscommunity.org/ius-release.rpm
+    state: present
+  tags: ['package']
+  when: ansible_distribution == "CentOS"
+
+- name: Instal IUS
+  package:
+    name: https://centos{{ _distribution_major_version }}.iuscommunity.org/ius-release.rpm
+    state: present
+  tags: ['package']
+  when: ansible_distribution == "RedHat"
+
+- name: Set prefix for PHP package names.
+  set_fact:
+    _php_package_prefix: "php{{ php_install_version | replace('.', '') }}u"
+  tags: ['set_fact']

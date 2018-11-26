@@ -1,0 +1,55 @@
+---
+- debug:
+    var: ansible_distribution_version
+
+- debug:
+    var: ansible_distribution
+
+- debug:
+    var: ansible_distribution_release
+
+# Include var files
+- name: Include version-specific variables for CentOS/RHEL.
+  include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_distribution == 'CentOS' or
+        ansible_distribution == 'Red Hat Enterprise Linux' or
+        ansible_distribution == 'RedHat'
+  tags: ['include']
+
+- name: Include version-specific variables for Ubuntu.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  when: ansible_distribution == 'Ubuntu'
+  tags: ['include']
+
+- name: Include version-specific variables for Debian.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_distribution == 'Debian'
+  tags: ['include']
+
+# Include setup tasks
+- include_tasks: "{{ ansible_os_family }}-setup.yml"
+  when: ansible_os_family == 'RedHat'
+  tags: ['include_tasks']
+
+- include_tasks: "{{ ansible_distribution }}-setup.yml"
+  when: ansible_distribution == 'Debian'
+  tags: ['include_tasks']
+
+- include_tasks: "{{ ansible_distribution }}-setup.yml"
+  when: ansible_distribution == 'Ubuntu'
+  tags: ['include_tasks']
+
+# Actual installation tasks
+- name: Install PHP packages.
+  package:
+    name: "{{_php_package_prefix}}-{{item}}"
+    state: present
+  tags: ['package']
+  with_items: "{{ php_install_extensions }}"
+
+- name: Install PHP-FPM.
+  package:
+    name: "{{_php_package_prefix}}-fpm"
+    state: present
+  tags: ['package']
+  when: php_install_fpm
