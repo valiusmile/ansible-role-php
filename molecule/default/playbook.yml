@@ -3,3 +3,19 @@
   hosts: all
   roles:
     - role: memoryleak.php
+      php_install_extensions:
+        - gd
+        - bcmath
+        - intl
+        - json
+        - mbstring
+        - mysqlnd
+        - opcache
+        - pdo
+        - pspell
+        - recode
+        - soap
+        - xml
+        - xmlrpc
+        - pecl-mongodb
+        - pecl-redis
