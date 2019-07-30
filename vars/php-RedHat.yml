@@ -20,6 +20,7 @@ __default_packages:
   - php71u-soap
   - php71u-xml
   - php71u-xmlrpc
+  - php71u-pecl-imagick
 
 __default_pool_dir: /etc/php-fpm.d
 
