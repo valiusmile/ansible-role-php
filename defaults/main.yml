@@ -18,7 +18,7 @@ php_install_extensions:
 # for pecl extensions on RedHat platforms use pecl prefix:
 #   - pecl-mongodb
 #   - pecl-redis
-
+php_append_package_postfix: 'u'
 php_install_fpm: true
 php_install_cli: true
 

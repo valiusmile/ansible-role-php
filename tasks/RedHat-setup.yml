@@ -27,5 +27,5 @@
 
 - name: Set prefix for PHP package names.
   set_fact:
-    _php_package_prefix: "php{{ php_install_version | replace('.', '') }}u"
+    _php_package_prefix: "php{{ php_install_version | replace('.', '') }}{{ php_append_package_postfix }}"
   tags: ['set_fact']
