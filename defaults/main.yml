@@ -1,5 +1,6 @@
 ---
 # defaults file for memoryleak.php
+php_install_execute: true
 php_install_version: 7.1
 php_install_extensions:
   - gd

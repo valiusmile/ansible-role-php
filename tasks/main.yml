@@ -21,14 +21,17 @@
 - include_tasks: "{{ ansible_os_family }}-setup.yml"
   when: ansible_os_family == 'RedHat'
   tags: ['include_tasks']
+  when: php_install_execute
 
 - include_tasks: "{{ ansible_distribution }}-setup.yml"
   when: ansible_distribution == 'Debian'
   tags: ['include_tasks']
+  when: php_install_execute
 
 - include_tasks: "{{ ansible_distribution }}-setup.yml"
   when: ansible_distribution == 'Ubuntu'
   tags: ['include_tasks']
+  when: php_install_execute
 
 # Actual installation tasks
 - name: Install PHP cli.
@@ -36,7 +39,9 @@
     name: "{{_php_package_prefix}}-cli"
     state: present
   tags: ['package']
-  when: php_install_cli
+  when: 
+    - php_install_cli 
+    - php_install_execute
 
 - name: Install PHP packages.
   package:
@@ -50,7 +55,9 @@
     name: "{{_php_package_prefix}}-fpm"
     state: present
   tags: ['package']
-  when: php_install_fpm
+  when: 
+    - php_install_fpm
+    - php_install_execute
 
 # Configuration tasks
 - name: "Configure PHP CLI"
@@ -60,7 +67,9 @@
     regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
     state: present
   tags: ['lineinfile']
-  when: php_install_cli
+  when: 
+    - php_install_cli
+    - php_install_execute
   loop: "{{ php_ini_config }}"
 
 - name: "Configure PHP-FPM"
