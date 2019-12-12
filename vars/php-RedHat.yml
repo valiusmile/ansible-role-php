@@ -10,7 +10,6 @@ __default_packages:
   - php73-json
   - php73-ldap
   - php73-mbstring
-  - php73-mcrypt
   - php73-mysqlnd
   - php73-opcache
   - php73-pdo
