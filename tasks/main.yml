@@ -49,6 +49,8 @@
     state: present
   tags: ['package']
   with_items: "{{ php_install_extensions }}"
+  when:
+    - php_install_execute
 
 - name: Install PHP-FPM.
   package:
