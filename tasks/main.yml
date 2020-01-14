@@ -44,6 +44,7 @@
     state: present
   tags: ['package']
   with_items: "{{ php_install_extensions }}"
+  when: php_install_cli
 
 - name: Install PHP-FPM.
   package:
@@ -60,7 +61,6 @@
     regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
     state: present
   tags: ['lineinfile']
-  when: php_install_cli
   loop: "{{ php_ini_config }}"
 
 - name: "Configure PHP-FPM"
@@ -71,13 +71,11 @@
     state: present
   tags: ['lineinfile']
   loop: "{{ php_ini_config }}"
-  when: ( php_install_cli and __php_config_path_cli != __php_config_path_fpm ) or
-        ( php_install_cli == False and php_install_fpm)
+  when: ( __php_config_path_cli != __php_config_path_fpm )
 
 - name: Create PHP-FPM pool configurations.
   template:
     dest: "{{ __php_pool_path }}/{{ item.key }}.conf"
     src: pool.conf.j2
   tags: ['template']
-  when: php_install_fpm
   loop: "{{ php_fpm_pools|dict2items }}"
