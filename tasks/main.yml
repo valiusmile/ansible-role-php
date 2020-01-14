@@ -18,7 +18,7 @@
   tags: ['include']
 
 # Include setup tasks
-- include_tasks: "{{ ansible_distribution }}-setup.yml"
+- include_tasks: "{{ ansible_os_family }}-setup.yml"
   when: ansible_os_family == 'RedHat'
   tags: ['include_tasks']
 
