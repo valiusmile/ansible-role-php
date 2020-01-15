@@ -79,3 +79,4 @@
     src: pool.conf.j2
   tags: ['template']
   loop: "{{ php_fpm_pools|dict2items }}"
+  when: php_install_fpm
