@@ -13,14 +13,14 @@
 
 - name: Instal IUS
   package:
-    name: https://centos{{ _distribution_major_version }}.iuscommunity.org/ius-release.rpm
+    name: https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm
     state: present
   tags: ['package']
   when: ansible_distribution == "CentOS"
 
 - name: Instal IUS
   package:
-    name: https://centos{{ _distribution_major_version }}.iuscommunity.org/ius-release.rpm
+    name: https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm
     state: present
   tags: ['package']
   when: ansible_distribution == "RedHat"
