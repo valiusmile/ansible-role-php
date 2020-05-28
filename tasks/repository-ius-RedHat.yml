@@ -1,6 +1,6 @@
 ---
 - name: Install IUS package.
   package:
-    name: https://rhel{{ ansible_distribution_major_version }}.iuscommunity.org/ius-release.rpm
+    name: https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm
     state: present
   tags: ['package', 'ius']
