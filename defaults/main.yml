@@ -70,3 +70,4 @@ php_fpm_pools:
 
     - name: pm.max_spare_servers
       value: 3
+__php_service_name: php-fpm
