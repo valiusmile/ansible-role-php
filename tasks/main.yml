@@ -80,3 +80,4 @@
   tags: ['template']
   loop: "{{ php_fpm_pools|dict2items }}"
   when: php_install_fpm
+  notify: php-restart-handler
