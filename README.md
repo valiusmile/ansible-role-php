@@ -1,70 +1,73 @@
-nudorm.php
+[![Build Status](https://travis-ci.org/memoryleak/ansible-role-php.svg?branch=v3)](https://travis-ci.org/memoryleak/ansible-role-php)
+
+memoryleak.php
 =========
 
-A role for installing and configuring PHP.
+Role for installing and managing recent PHP versions.
 
 Requirements
 ------------
 
-No particular requirement.
+None
 
 Role Variables
 --------------
-
 ```
-# Use a particular repository: ius|remi
-rhel_repository: ius
+php_el8_module: php:7.3
+php_selinux_support: true
+php_ini_path: /etc/php.ini
+php_ini_dir_path: /etc/php.d
+php_ini_config: []
+# - name: date.timezone
+#   value: UTC
 
-# Install this list of packages.
-default_packages:
-  - php7.1
-  - ...
+php_fpm_conf_path: /etc/php-fpm.conf
+php_fpm_pool_path: /etc/php-fpm.d
+php_fpm_pool_files: []
+# www:
+#   user: nginx
 
-# If and which FPM package(s) to install.
-fpm_packages:
-  - php7.1-fpm
-  - ...
 
-# Custom PHP-FPM configuration.
-fpm_conf_config:
+php_fpm_service_enabled: true
+php_fpm_service_name: php-fpm
+php_fpm_config: []
 
-php_ini_config:
-  - name: memory_limit
-    value: 256M
+php_install_packages:
+  - php-fpm
+  - php-cli
+  - php-bcmath
+  - php-common
+  - php-enchant
+  - php-gd
+  - php-gmp
+  - php-intl
+  - php-json
+  - php-ldap
+  - php-mbstring
+  - php-mysqlnd
+  - php-opcache
+  - php-pdo
+  - php-pear
+  - php-process
+  - php-recode
+  - php-snmp
+  - php-soap
+  - php-xml
+  - php-xmlrpc
 
-  - name: date.timezone
-    value: UTC
-
-  - name: post_max_size
-    value: 64M
-
-  - name: upload_max_filesize
-    value: 64M
-
-# Configure the PHP ini path.
-php_ini_path: /etc/php/7.1/cli/php.ini
-
-# Configure the PHP conf path.
-php_conf_path: /etc/php/7.1/cli/php.ini
-
-# Configure the default pool directory
-php_pool_path: /etc/php/7.1/fpm/pool.d
 ```
 
 Dependencies
 ------------
 
-No dependency.
+None
 
 Example Playbook
 ----------------
 
-```
----
-- hosts: php
-  roles:
-    - name: nudorm.php
-```
+    - hosts: all
+      roles:
+        - role: memoryleak.php
 
 License
 -------
@@ -73,4 +76,5 @@ BSD
 
 Author Information
 ------------------
-Haydar Ciftci <haydar.ciftci@gmail.com>
+
+Haydar Ciftci, <haydar.ciftci@gmail.com>

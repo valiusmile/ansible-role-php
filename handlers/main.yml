@@ -1,11 +1,9 @@
 ---
-- name: Include OS-specific variables.
-  include_vars: "php-{{ ansible_os_family }}.yml"
-
-# handlers file for nudorm.php
-- name: php-fpm-restart-handler
+# handlers file for memoryleak.php
+- name: php-fpm-restarted
   service:
-    enabled: yes
-    name: "{{ __defualt_php_service }}"
+    enabled: "{{ php_fpm_service_enabled }}"
+    name: "{{ php_fpm_service_name }}"
     state: restarted
-  tags: ['service', 'php-fpm']
+  tags:
+    - service

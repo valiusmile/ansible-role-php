@@ -1,79 +1,64 @@
 ---
-# tasks file for nudorm.php
-- name: Include OS-specific variables.
-  include_vars: "php-{{ ansible_os_family }}.yml"
+# tasks file for memoryleak.php
+- name: Include RHEL specific tasks
+  include: "RedHat-{{ ansible_distribution_major_version | int }}.yml"
+  tags:
+    - include
+  when:
+    - ansible_os_family == 'RedHat'
 
-- name: Set packages list if default is provided.
-  set_fact:
-    default_packages: "{{ __default_packages | list }}"
-  when:  default_packages is not defined
+- name: Include SELinux specific tasks
+  include: "selinux.yml"
+  tags:
+    - include
+  when:
+    - ansible_os_family == 'RedHat'
 
-- name: Include repository configuration.
-  include_tasks: repository-{{ rhel_repository }}-RedHat.yml
-  tags: ['include', 'repository']
-  when: ansible_os_family == "RedHat"
-
-- name: Install PHP packages.
+- name: Install PHP packages
   package:
-    name: "{{ item }}"
+    name: "{{ php_install_packages | join(',') }}"
     state: present
-  tags: ['package', 'php']
-  with_items: "{{ default_packages }}"
+  tags:
+    - package
+    - php
 
-- name: Try to parse the PHP ini location
-  shell: 'php --ini | grep "Loaded Configuration File" | cut -d ":" -f2'
-  tags: ['shell']
-  register: return_php_ini
-  when: php_ini_path is not defined
-
-- name: Set PHP ini path if not provided.
-  set_fact:
-    php_ini_path: "{{ return_php_ini.stdout | trim }}"
-  when: php_ini_path is not defined
-
-- name: Try to parse the php-fpm.conf location
-  shell: 'find / -name php-fpm.conf'
-  tags: ['shell']
-  register: return_php_conf
-  when: php_conf_path is not defined
-
-- name: Set PHP conf path if not provided.
-  set_fact:
-    php_conf_path: "{{ return_php_conf.stdout_lines[0] }}"
-  when: php_conf_path is not defined
-
-- name: Set PHP ini configuration values.
+- name: Set PHP ini configuration values
   lineinfile:
     backup: true
     line: "{{ item.name + ' = ' + item.value }}"
     path: "{{ php_ini_path }}"
     regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
     state: present
-  tags: ['lineinfile']
+  tags:
+    - lininfile
+    - php
+    - php_ini
   with_items: "{{ php_ini_config }}"
-  when: php_ini_config is defined
 
-- name: Set PHP conf configuration values.
+- name: Set PHP FPM configuration values
   lineinfile:
     backup: true
     line: "{{ item.name + ' = ' + item.value }}"
-    path: "{{ php_conf_path }}"
+    path: "{{ php_fpm_conf_path }}"
     regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
     state: present
-  tags: ['lineinfile']
-  with_items: "{{ fpm_conf_config }}"
-  when: fpm_conf_config is defined
+  tags:
+    - lininfile
+    - php
+    - php_fpm_conf
+  with_items: "{{ php_fpm_config }}"
 
-- name: Set PHP pool path if not provided.
-  set_fact:
-    php_pool_path: "{{ __default_pool_dir }}"
-  when: php_pool_path is not defined
-
-- name: Copy pool configurations if provided.
-  copy:
-    dest: "{{ php_pool_path }}/{{ item | basename }}"
-    src: "{{ item }}"
-  tags: ['copy', 'php-fpm']
-  with_items: "{{ php_pool_files }}"
-  when: php_pool_files is defined
-  notify: php-fpm-restart-handler
+- name: Create pool files
+  template:
+    dest: "{{ php_fpm_pool_path }}/{{ item.key }}.conf"
+    src: pool.j2
+    trim_blocks: true
+    force: true
+  tags:
+    - template
+    - file
+    - php
+    - php_fpm_pool
+    - copy
+  with_dict: "{{ php_fpm_pool_files }}"
+  notify: php-fpm-restarted

@@ -1,0 +1,8 @@
+---
+- name: Toggles SELinux booleans.
+  seboolean:
+    name: httpd_setrlimit
+    persistent: true
+    state: true
+  tags:
+    - seboolean
