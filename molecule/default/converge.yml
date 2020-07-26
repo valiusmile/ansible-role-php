@@ -3,6 +3,7 @@
   hosts: all
   vars:
     php_selinux_support: false
+    php_user_create: true
   tasks:
     - name: "Include memoryleak.php"
       include_role:

@@ -41,3 +41,9 @@ php_install_packages:
   - php-soap
   - php-xml
   - php-xmlrpc
+
+php_user_create: false
+php_user_name: php-fpm
+php_user_group: php-fpm
+php_user_uid: 1000
+php_user_gid: 1000

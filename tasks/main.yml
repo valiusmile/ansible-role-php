@@ -14,6 +14,31 @@
   when:
     - ansible_os_family == 'RedHat'
 
+- name: Manage presence of groups on a host.
+  group:
+    gid: "{{ php_user_gid }}"
+    name: "{{ php_user_group }}"
+    state: present
+    system: true
+  tags:
+    - group
+  when:
+    - php_user_create
+
+- name: Manage user accounts and user attributes.
+  user:
+    create_home: false
+    group: "{{ php_user_group }}"
+    name: "{{ php_user_name }}"
+    state: present
+    system: yes
+    uid: "{{ php_user_uid }}"
+  tags:
+    - user
+    - php
+  when:
+    - php_user_create
+
 - name: Install PHP packages
   package:
     name: "{{ php_install_packages | join(',') }}"
