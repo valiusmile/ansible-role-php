@@ -6,3 +6,5 @@
     state: true
   tags:
     - seboolean
+  when:
+    - php_selinux_support

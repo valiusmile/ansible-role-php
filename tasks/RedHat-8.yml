@@ -8,12 +8,14 @@
   when:
     - php_selinux_support
 
+# Todo: Make following two tasks idempotent
 - name: Reset the DNF PHP module
   shell:
     cmd: dnf module reset -y php
   register: result
   when:
     - php_el8_module is defined
+  changed_when: false
   tags:
     - shell
     - dnf
@@ -22,6 +24,7 @@
   shell:
     cmd: dnf module enable -y "{{ php_el8_module }}"
   register: result
+  changed_when: false
   when:
     - php_el8_module is defined
   tags:

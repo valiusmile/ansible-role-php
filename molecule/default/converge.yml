@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    php_selinux_support: false
+  tasks:
+    - name: "Include memoryleak.php"
+      include_role:
+        name: "memoryleak.php"
