@@ -1,28 +1,24 @@
-memoryleak.php
-==============
-
-Role for installing and configuring PHP.
-
-Requirements
-------------
-
-None
-
-Role Variables
---------------
-
-```
+---
+# defaults file for memoryleak.php
 php_el8_module: php:7.3
 php_selinux_support: true
 php_ini_path: /etc/php.ini
 php_ini_dir_path: /etc/php.d
 php_ini_config: []
+# - name: date.timezone
+#   value: UTC
+
 php_fpm_conf_path: /etc/php-fpm.conf
 php_fpm_pool_path: /etc/php-fpm.d
 php_fpm_pool_files: []
+# www:
+#   user: nginx
+
+
 php_fpm_service_enabled: true
 php_fpm_service_name: php-fpm
 php_fpm_config: []
+
 php_install_packages:
   - php-fpm
   - php-cli
@@ -45,29 +41,3 @@ php_install_packages:
   - php-soap
   - php-xml
   - php-xmlrpc
-
-```
-
-Dependencies
-------------
-
-None
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-	    - name: memoryleak.php
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-Haydar Ciftci <haydar.ciftci@gmail.com>

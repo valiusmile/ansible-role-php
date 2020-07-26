@@ -1,0 +1,64 @@
+---
+# tasks file for memoryleak.php
+- name: Include RHEL specific tasks
+  include: "RedHat-{{ ansible_distribution_major_version | int }}.yml"
+  tags:
+    - include
+  when:
+    - ansible_os_family == 'RedHat'
+
+- name: Include SELinux specific tasks
+  include: "selinux.yml"
+  tags:
+    - include
+  when:
+    - ansible_os_family == 'RedHat'
+
+- name: Install PHP packages
+  package:
+    name: "{{ php_install_packages | join(',') }}"
+    state: present
+  tags:
+    - package
+    - php
+
+- name: Set PHP ini configuration values
+  lineinfile:
+    backup: true
+    line: "{{ item.name + ' = ' + item.value }}"
+    path: "{{ php_ini_path }}"
+    regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
+    state: present
+  tags:
+    - lininfile
+    - php
+    - php_ini
+  with_items: "{{ php_ini_config }}"
+
+- name: Set PHP FPM configuration values
+  lineinfile:
+    backup: true
+    line: "{{ item.name + ' = ' + item.value }}"
+    path: "{{ php_fpm_conf_path }}"
+    regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
+    state: present
+  tags:
+    - lininfile
+    - php
+    - php_fpm_conf
+  with_items: "{{ php_fpm_config }}"
+
+- name: Create pool files
+  template:
+    dest: "{{ php_fpm_pool_path }}/{{ item.key }}.conf"
+    src: pool.j2
+    trim_blocks: true
+    force: true
+  tags:
+    - template
+    - file
+    - php
+    - php_fpm_pool
+    - copy
+  with_dict: "{{ php_fpm_pool_files }}"
+  notify: php-fpm-restarted
