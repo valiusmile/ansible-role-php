@@ -12,10 +12,10 @@
 - name: Reset the DNF PHP module
   shell:
     cmd: dnf module reset -y php
+    warn: false
   register: result
   when:
     - php_el8_module is defined
-  changed_when: false
   tags:
     - shell
     - dnf
@@ -23,8 +23,8 @@
 - name: Enable the DNF PHP module
   shell:
     cmd: dnf module enable -y "{{ php_el8_module }}"
+    warn: false
   register: result
-  changed_when: false
   when:
     - php_el8_module is defined
   tags:

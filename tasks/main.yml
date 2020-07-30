@@ -1,11 +1,17 @@
 ---
 # tasks file for memoryleak.php
-- name: Include RHEL specific tasks
-  include: "RedHat-{{ ansible_distribution_major_version | int }}.yml"
+- name: Include distribution specific tasks
+  include: "{{ item }}"
+  with_first_found:
+    - files:
+      - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+      - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+
+      skip: true
+
   tags:
     - include
-  when:
-    - ansible_os_family == 'RedHat'
+
 
 - name: Include SELinux specific tasks
   include: "selinux.yml"
@@ -14,7 +20,7 @@
   when:
     - ansible_os_family == 'RedHat'
 
-- name: Manage presence of groups on a host.
+- name: Create PHP group.
   group:
     gid: "{{ php_user_gid }}"
     name: "{{ php_user_group }}"
@@ -25,7 +31,7 @@
   when:
     - php_user_create
 
-- name: Manage user accounts and user attributes.
+- name: Create PHP user.
   user:
     create_home: false
     group: "{{ php_user_group }}"

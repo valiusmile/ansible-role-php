@@ -1,7 +1,7 @@
 ---
 # defaults file for memoryleak.php
 php_el8_module: php:7.3
-php_selinux_support: true
+php_selinux_support: false
 php_ini_path: /etc/php.ini
 php_ini_dir_path: /etc/php.d
 php_ini_config: []
@@ -15,7 +15,7 @@ php_fpm_pool_files: []
 #   user: nginx
 
 
-php_fpm_service_enabled: true
+php_fpm_service_enabled: false
 php_fpm_service_name: php-fpm
 php_fpm_config: []
 
