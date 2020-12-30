@@ -1,19 +1,18 @@
 ---
 # defaults file for memoryleak.php
-php_el8_module: php:7.3
-php_selinux_support: false
 php_ini_path: /etc/php.ini
 php_ini_dir_path: /etc/php.d
 php_ini_config: []
 # - name: date.timezone
 #   value: UTC
 
+ # If set to true, removes all pools from php_fpm_pool_path
+php_fpm_pool_clear: false
 php_fpm_conf_path: /etc/php-fpm.conf
 php_fpm_pool_path: /etc/php-fpm.d
 php_fpm_pool_files: []
 # www:
 #   user: nginx
-
 
 php_fpm_service_enabled: false
 php_fpm_service_name: php-fpm
@@ -22,28 +21,6 @@ php_fpm_config: []
 php_install_packages:
   - php-fpm
   - php-cli
-  - php-bcmath
-  - php-common
-  - php-enchant
-  - php-gd
-  - php-gmp
-  - php-intl
-  - php-json
-  - php-ldap
-  - php-mbstring
-  - php-mysqlnd
-  - php-opcache
-  - php-pdo
-  - php-pear
-  - php-process
-  - php-recode
-  - php-snmp
-  - php-soap
-  - php-xml
-  - php-xmlrpc
 
-php_user_create: false
 php_user_name: php-fpm
 php_user_group: php-fpm
-php_user_uid: 1000
-php_user_gid: 1000

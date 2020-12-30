@@ -1,33 +1,29 @@
 ---
-dist: bionic
 language: python
-python:
-  - 3.8
-before_install:
-  - . /etc/os-release
-  - echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-  - curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key | sudo apt-key add -
-  - sudo apt-get update -qq
-  - sudo apt-get -qq -y install podman
+python: "2.7"
 
-  # Show version and info.
-  - podman --version
-  - podman version
-  - podman info --debug
-  - apt-cache show podman
-  - dpkg-query -L podman
+# Use the new container infrastructure
+sudo: false
 
-  # Hack podman's configuration files.
-  # /etc/containers/registries.conf does not exist.
-  # https://clouding.io/kb/en/how-to-install-and-use-podman-on-ubuntu-18-04/
-  - ls -1 /etc/containers/registries.conf || true
-  - sudo mkdir -p /etc/containers
-  - echo -e "[registries.search]\nregistries = ['docker.io', 'quay.io']" | sudo tee /etc/containers/registries.conf
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
 
 install:
-  - pip install ansible molecule[podman]
+  # Install ansible
+  - pip install ansible
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  - molecule --version
-  - ansible --version
-  - molecule test
+  # Basic role syntax check
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

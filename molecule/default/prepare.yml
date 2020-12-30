@@ -1,0 +1,103 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: "Prerpare debian family"
+      block:
+        - name: Update apt cache.
+          apt:
+            update_cache: true
+          tags:
+            - apt
+
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: "RedHat os_family prepare (GPG)"
+      block:
+        - name: Import remi GPG key
+          rpm_key:
+            key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2020
+            state: present
+          tags:
+            - rpm_key
+          when: ansible_distribution_major_version|int >= 33
+
+        - name: Import remi GPG key
+          rpm_key:
+            key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2019
+            state: present
+          tags:
+            - rpm_key
+          when:
+            - ansible_distribution_major_version|int >= 30
+            - ansible_distribution_major_version|int <= 31
+
+        - name: Import remi GPG key
+          rpm_key:
+            key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+            state: present
+          tags:
+            - rpm_key
+          when: (ansible_distribution_major_version|int >= 28 and ansible_distribution_major_version|int <= 29) or
+                (ansible_distribution_major_version|int == 8 )
+
+        - name: Import remi GPG key
+          rpm_key:
+            key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2017
+            state: present
+          tags:
+            - rpm_key
+          when:
+            - ansible_distribution_major_version|int >= 26
+            - ansible_distribution_major_version|int <= 27
+
+        - name: Import remi GPG key
+          rpm_key:
+            key: https://rpms.remirepo.net/RPM-GPG-KEY-remi
+            state: present
+          tags:
+            - rpm_key
+          when: ansible_distribution_major_version|int <= 25 or
+                ansible_distribution_major_version|int <= 7
+
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: "Fedora distribution prepare (Repository)"
+      block:
+        - name: "Set remi URL for Fedora"
+          set_fact:
+            remi_url: "https://rpms.remirepo.net/{{ ansible_distribution | lower }}/remi-release-{{ ansible_distribution_major_version|int }}.rpm"
+          tags:
+            - set_fact
+          when: ansible_distribution == 'Fedora'
+
+        - name: Set remi URL for RHEL/CentOS
+          set_fact:
+            remi_url: "https://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version|int }}.rpm"
+          tags:
+            - set_fact
+          when: ansible_distribution != 'Fedora'
+
+        - name: Install repository and tools.
+          package:
+            name: "{{ item }}"
+            state: present
+          tags:
+            - package
+          with_items:
+            - "{{ remi_url }}"
+            - yum-utils
+
+        - name: Enable repository.
+          shell: "yum-config-manager --set-enabled remi"
+          tags:
+            - shell
+          when: ansible_distribution == 'Fedora'
+
+        - name: Enable repository.
+          shell: "yum-config-manager --enable remi"
+          tags:
+            - shell
+          when: ansible_distribution != 'Fedora'
+
+      when: ansible_facts['os_family'] == "RedHat"

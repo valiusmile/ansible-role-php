@@ -1,10 +1,76 @@
 ---
 - name: Converge
   hosts: all
-  vars:
-    php_selinux_support: false
-    php_user_create: true
   tasks:
     - name: "Include memoryleak.php"
       include_role:
         name: "memoryleak.php"
+      vars:
+        php_install_packages:
+          - php73
+          - php73-php-bcmath
+          - php73-php-brotli
+          - php73-php-cli
+          - php73-php-enchant
+          - php73-php-fpm
+          - php73-php-gd
+          - php73-php-intl
+          - php73-php-json
+          - php73-php-ldap
+          - php73-php-mbstring
+          - php73-php-mysqlnd
+          - php73-php-opcache
+          - php73-php-pdo
+          - php73-php-pecl-amqp
+          - php73-php-pecl-crypto
+          - php73-php-pecl-csv
+          - php73-php-pecl-mcrypt
+          - php73-php-pecl-mysql
+          - php73-php-pecl-oauth
+          - php73-php-pecl-uploadprogress
+          - php73-php-pecl-uuid
+          - php73-php-pecl-xdebug3
+          - php73-php-pecl-yaml
+          - php73-php-pecl-zip
+          - php73-php-phpiredis
+          - php73-php-process
+          - php73-php-recode
+          - php73-php-soap
+          - php73-php-sodium
+          - php73-php-xml
+          - php73-php-xmlrpc
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: "Include memoryleak.php"
+      include_role:
+        name: "memoryleak.php"
+      vars:
+        php_install_packages:
+          - php-amqp
+          - php-bcmath
+          - php-bz2
+          - php-cli
+          - php-composer-xdebug-handler
+          - php-curl
+          - php-date
+          - php-enchant
+          - php-fpm
+          - php-fxsl
+          - php-gd
+          - php-gmp
+          - php-intl
+          - php-json
+          - php-json-schema
+          - php-mbstring
+          - php-mysql
+          - php-oauth
+          - php-redis
+          - php-soap
+          - php-uploadprogress
+          - php-uuid
+          - php-xdebug
+          - php-xml
+          - php-xmlrpc
+          - php-yaml
+          - php-zip
+      when: ansible_facts['os_family'] != "RedHat"

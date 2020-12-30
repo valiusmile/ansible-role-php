@@ -1,57 +1,22 @@
-memoryleak.php
-==============
+Role Name
+=========
 
-Role for installing and configuring PHP.
+A brief description of the role goes here.
 
 Requirements
 ------------
 
-None
+Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-```
-php_el8_module: php:7.3
-php_selinux_support: false
-php_ini_path: /etc/php.ini
-php_ini_dir_path: /etc/php.d
-php_ini_config: []
-php_fpm_conf_path: /etc/php-fpm.conf
-php_fpm_pool_path: /etc/php-fpm.d
-php_fpm_pool_files: []
-php_fpm_service_enabled: false
-php_fpm_service_name: php-fpm
-php_fpm_config: []
-php_install_packages:
-  - php-fpm
-  - php-cli
-  - php-bcmath
-  - php-common
-  - php-enchant
-  - php-gd
-  - php-gmp
-  - php-intl
-  - php-json
-  - php-ldap
-  - php-mbstring
-  - php-mysqlnd
-  - php-opcache
-  - php-pdo
-  - php-pear
-  - php-process
-  - php-recode
-  - php-snmp
-  - php-soap
-  - php-xml
-  - php-xmlrpc
-
-```
+A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
 Dependencies
 ------------
 
-None
+A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -60,7 +25,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-	    - name: memoryleak.php
+         - { role: username.rolename, x: 42 }
 
 License
 -------
@@ -70,4 +35,4 @@ BSD
 Author Information
 ------------------
 
-Haydar Ciftci <haydar.ciftci@gmail.com>
+An optional section for the role authors to include contact information, or a website (HTML is not allowed).

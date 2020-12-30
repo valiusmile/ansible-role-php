@@ -1,57 +1,11 @@
 ---
 # tasks file for memoryleak.php
-- name: Include distribution specific tasks
-  include: "{{ item }}"
-  with_first_found:
-    - files:
-      - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-      - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
-
-      skip: true
-
-  tags:
-    - include
-
-
-- name: Include SELinux specific tasks
-  include: "selinux.yml"
-  tags:
-    - include
-  when:
-    - ansible_os_family == 'RedHat'
-
-- name: Create PHP group.
-  group:
-    gid: "{{ php_user_gid }}"
-    name: "{{ php_user_group }}"
-    state: present
-    system: true
-  tags:
-    - group
-  when:
-    - php_user_create
-
-- name: Create PHP user.
-  user:
-    create_home: false
-    group: "{{ php_user_group }}"
-    name: "{{ php_user_name }}"
-    state: present
-    system: yes
-    uid: "{{ php_user_uid }}"
-  tags:
-    - user
-    - php
-  when:
-    - php_user_create
-
 - name: Install PHP packages
   package:
     name: "{{ php_install_packages | join(',') }}"
     state: present
   tags:
     - package
-    - php
 
 - name: Set PHP ini configuration values
   lineinfile:
@@ -87,9 +41,7 @@
     force: true
   tags:
     - template
-    - file
     - php
     - php_fpm_pool
-    - copy
   with_dict: "{{ php_fpm_pool_files }}"
   notify: php-fpm-restarted
