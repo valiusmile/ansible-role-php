@@ -9,20 +9,6 @@ jobs:
         with:
           path: memoryleak.php
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      - name: Install dependencies
+      - name: Test Ansible roles with Molecule
         working-directory: memoryleak.php
-        run: |
-          sudo apt install docker
-          sudo systemctl start docker
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
-
-      - name: Test with molecule
-        working-directory: memoryleak.php
-        run: |
-          molecule test
+        uses: robertdebock/molecule-action@2.6.8
