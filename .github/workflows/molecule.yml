@@ -11,5 +11,7 @@ jobs:
           path: "memoryleak.php"
 
       - name: Test Ansible role with Molecule
-        working-directory: "memoryleak.php"
         uses: robertdebock/molecule-action@2.6.8
+        options: parallel
+        with:
+          path: "memoryleak.php"
