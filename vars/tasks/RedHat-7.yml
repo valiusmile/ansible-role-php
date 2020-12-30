@@ -1,9 +1,0 @@
----
-- name: Install module required for SELinux
-  package:
-    name: libsemanage-python, policycoreutils-python
-    state: present
-  tags:
-    - package
-  when:
-    - php_selinux_support

@@ -1,5 +1,0 @@
-; {{ ansible_managed }}
-[{{ item.key }}]
-{% for line in item.value %}
-{{ line.name }} = {{ line.value }}
-{% endfor %}
