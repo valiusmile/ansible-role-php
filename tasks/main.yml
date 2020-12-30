@@ -9,7 +9,6 @@
 
 - name: Set PHP ini configuration values
   lineinfile:
-    backup: true
     line: "{{ item.name + ' = ' + item.value }}"
     path: "{{ php_ini_path }}"
     regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
@@ -22,7 +21,6 @@
 
 - name: Set PHP FPM configuration values
   lineinfile:
-    backup: true
     line: "{{ item.name + ' = ' + item.value }}"
     path: "{{ php_fpm_conf_path }}"
     regexp: "{{ ';?' + item.name + ' =(.*)?'}}"
@@ -36,7 +34,7 @@
 - name: Create pool files
   template:
     dest: "{{ php_fpm_pool_path }}/{{ item.key }}.conf"
-    src: pool.j2
+    src: pool.conf.j2
     trim_blocks: true
     force: true
   tags:

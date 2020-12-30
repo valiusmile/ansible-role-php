@@ -1,2 +1,12 @@
 ---
 # handlers file for memoryleak.php
+- name: php-fpm-restarted
+  service:
+    enabled: "{{ php_fpm_service_enabled }}"
+    name: "{{ php_fpm_service_name }}"
+    state: restarted
+  when:
+    - php_fpm_service_name is defined
+    - php_fpm_service_enabled
+  tags:
+    - service

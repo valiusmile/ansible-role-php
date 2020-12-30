@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: "memoryleak.php"
 
-      - name: Test Ansible roles with Molecule
+      - name: Test Ansible role with Molecule
+        working-directory: "memoryleak.php"
         uses: robertdebock/molecule-action@2.6.8
