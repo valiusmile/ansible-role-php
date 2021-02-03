@@ -1,0 +1,8 @@
+---
+- name: Install PHP packages
+  package:
+    name: "{{ php_install_packages | join(',') }}"
+    state: present
+  tags:
+    - package
+    - php

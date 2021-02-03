@@ -1,0 +1,32 @@
+---
+- name: Install module required for SELinux
+  package:
+    name: python3-libsemanage, policycoreutils-python-utils
+    state: present
+  tags:
+    - package
+  when:
+    - php_selinux_support
+
+# Todo: Make following two tasks idempotent
+- name: Reset the DNF PHP module
+  shell:
+    cmd: dnf module reset -y php
+    warn: false
+  register: result
+  when:
+    - php_el8_module is defined
+  tags:
+    - shell
+    - dnf
+
+- name: Enable the DNF PHP module
+  shell:
+    cmd: dnf module enable -y "{{ php_el8_module }}"
+    warn: false
+  register: result
+  when:
+    - php_el8_module is defined
+  tags:
+    - shell
+    - dnf

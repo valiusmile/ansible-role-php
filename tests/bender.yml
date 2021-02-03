@@ -1,0 +1,39 @@
+---
+- hosts: all
+  vars:
+    ansible_bender:
+      base_image: centos:8
+      working_container:
+        volumes: ['{{ playbook_dir }}:/src:']
+      target_image:
+        name: php:centos8
+        labels:
+          built-by: '{{ ansible_user}} '
+        environment:
+          VARIABLE: value
+
+  roles:
+    - name: memoryleak.php
+      php_user_create: false
+      php_install_packages:
+        - php-cli
+        - php-bcmath
+        - php-common
+        - php-enchant
+        - php-gd
+        - php-gmp
+        - php-intl
+        - php-json
+        - php-ldap
+        - php-mbstring
+        - php-mysqlnd
+        - php-opcache
+        - php-pdo
+        - php-pear
+        - php-process
+        - php-snmp
+        - php-soap
+        - php-xml
+        - php-xmlrpc
+        #- php-pecl-xdebug
+        #- php-composer-xdebug-handler
