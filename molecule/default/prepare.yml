@@ -2,7 +2,7 @@
 - name: Prepare
   hosts: all
   tasks:
-    - name: "Prerpare debian family"
+    - name: "Prerpare Debian family"
       block:
         - name: Update apt cache.
           apt:
@@ -12,7 +12,7 @@
 
       when: ansible_facts['os_family'] == "Debian"
 
-    - name: "RedHat os_family prepare (GPG)"
+    - name: "Prerpare RedHat family"
       block:
         - name: Import remi GPG key
           rpm_key:
@@ -62,7 +62,7 @@
 
       when: ansible_facts['os_family'] == "RedHat"
 
-    - name: "Fedora distribution prepare (Repository)"
+    - name: "Prerpare Fedora distribution"
       block:
         - name: "Set remi URL for Fedora"
           set_fact:

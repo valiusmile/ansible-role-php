@@ -1,9 +1,0 @@
----
-- name: Install PHP packages
-  yum:
-    enablerepo: "{{ php_enable_repo | default(omit) }}"
-    state: present
-    name: "{{ php_install_packages | join(',') }}"
-  tags:
-    - yum
-    - php

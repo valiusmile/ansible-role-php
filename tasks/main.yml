@@ -30,6 +30,7 @@
     - php
     - php_fpm_conf
   with_items: "{{ php_fpm_config }}"
+  notify: php-fpm-restarted
 
 - name: Create pool files
   template:
