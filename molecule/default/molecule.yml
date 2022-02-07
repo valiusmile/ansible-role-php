@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 lint:
-  name: yamllint
+  name: 'yamllint'
 platforms:
   - name: Ubuntu
     image: ubuntu:latest

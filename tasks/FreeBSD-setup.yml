@@ -1,0 +1,5 @@
+---
+- name: Set prefix for PHP package names.
+  set_fact:
+    _php_package_prefix: "php{{ php_install_version | replace('.', '') }}"
+  tags: ['set_fact']

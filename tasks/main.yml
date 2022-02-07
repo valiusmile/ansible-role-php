@@ -7,6 +7,11 @@
         ansible_distribution == 'RedHat'
   tags: ['include']
 
+- name: Include version-specific variables for FreeBSD.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_distribution == 'FreeBSD'
+  tags: ['include']
+
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
@@ -19,15 +24,6 @@
 
 # Include setup tasks
 - include_tasks: "{{ ansible_os_family }}-setup.yml"
-  when: ansible_os_family == 'RedHat'
-  tags: ['include_tasks']
-
-- include_tasks: "{{ ansible_distribution }}-setup.yml"
-  when: ansible_distribution == 'Debian'
-  tags: ['include_tasks']
-
-- include_tasks: "{{ ansible_distribution }}-setup.yml"
-  when: ansible_distribution == 'Ubuntu'
   tags: ['include_tasks']
 
 # Actual installation tasks
@@ -37,6 +33,7 @@
     state: present
   tags: ['package']
   when: php_install_cli
+  notify: php-restart-handler
 
 - name: Install PHP packages.
   package:
@@ -44,7 +41,8 @@
     state: present
   tags: ['package']
   with_items: "{{ php_install_extensions }}"
-  when: php_install_cli
+  when: php_install_extensions | length > 0
+  notify: php-restart-handler
 
 - name: Install PHP-FPM.
   package:
@@ -52,6 +50,7 @@
     state: present
   tags: ['package']
   when: php_install_fpm
+  notify: php-restart-handler
 
 # Configuration tasks
 - name: "Configure PHP CLI"
@@ -62,6 +61,7 @@
     state: present
   tags: ['lineinfile']
   loop: "{{ php_ini_config }}"
+  notify: php-restart-handler
 
 - name: "Configure PHP-FPM"
   lineinfile:
@@ -72,6 +72,7 @@
   tags: ['lineinfile']
   loop: "{{ php_ini_config }}"
   when: ( __php_config_path_cli != __php_config_path_fpm )
+  notify: php-restart-handler
 
 - name: Create PHP-FPM pool configurations.
   template:
