@@ -22,6 +22,8 @@ php_append_package_postfix: 'u'
 php_install_fpm: true
 php_install_cli: true
 
+_php_package_prefix: "php{{ php_install_version | replace('.', '') }}{{ php_append_package_postfix }}"
+
 php_ini_config:
   - name: memory_limit
     value: 256M

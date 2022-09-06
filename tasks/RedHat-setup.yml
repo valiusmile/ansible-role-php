@@ -11,21 +11,35 @@
     state: present
   tags: ['package']
 
-- name: Instal IUS
+- name: Instal Remi repository key
+  rpm_key:
+      state: present
+      key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+  when: php_install_version == 8.1
+
+- name: Instal Remi repository
   package:
-    name: https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm
+    name: https://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm
     state: present
   tags: ['package']
-  when: ansible_distribution == "CentOS"
+  when: php_install_version == 8.1
+
+- name: Install a modularity appstream with remi-8.1
+  dnf:
+    name: '@php:remi-{{ php_install_version }}'
+    state: present
+  when: php_install_version == 8.1
 
 - name: Instal IUS
   package:
     name: https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm
     state: present
   tags: ['package']
-  when: ansible_distribution == "RedHat"
+  when: php_install_version != 8.1
 
-- name: Set prefix for PHP package names.
-  set_fact:
-    _php_package_prefix: "php{{ php_install_version | replace('.', '') }}{{ php_append_package_postfix }}"
-  tags: ['set_fact']
+- name: Instal IUS
+  package:
+    name: https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm
+    state: present
+  tags: ['package']
+  when: php_install_version != 8.1
